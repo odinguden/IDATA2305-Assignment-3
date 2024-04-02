@@ -54,5 +54,18 @@ public class FirstComeFirstServed extends Thread {
 				currentProcess = null;
 			}
 		}
+
+		int sumWaitingTime = 0;
+		int sumTurnaroundTime = 0;
+
+		for (ScheduledProcess process : this.processes) {
+			sumWaitingTime += process.getWaitingTime();
+			sumTurnaroundTime += process.getTurnaroundTime();
+		}
+
+		double averageWaitingTime = (double) sumWaitingTime / this.processes.length;
+		double averageTurnaroundTime = (double) sumTurnaroundTime / this.processes.length;
+
+		System.out.printf("%nAverage waiting time: %.2f%nAverage turnaround time: %.2f%n", averageWaitingTime, averageTurnaroundTime);
 	}
 }
