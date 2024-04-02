@@ -7,18 +7,19 @@ public class Proccess {
 	private int id;
 	private double arrivalTime;
 	private double burstTime;
-	private int priotity;
+	private int priority;
 
-	public Proccess(int id, double arrivalTime, double burstTime, int priotity) {
+	
+	public Proccess(int id, double burstTime, int priotity) {
 		this.id = id;
-		this.arrivalTime = arrivalTime;
+		this.arrivalTime = 0;
 		this.burstTime = burstTime;
 		this.priotity = priotity;
 	}
 
-	public Proccess(int id, double arrivalTime, double burstTime) {
+	public Proccess(int id, double burstTime) {
 		this.id = id;
-		this.arrivalTime = arrivalTime;
+		this.arrivalTime = 0;
 		this.burstTime = burstTime;
 		this.priotity = 0;
 	}
