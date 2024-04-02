@@ -1,8 +1,4 @@
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.PriorityQueue;
 
 public class PriSim extends Thread {
@@ -57,7 +53,7 @@ public class PriSim extends Thread {
 		if (currentProcess != null) {
 			currentProcess.countUpProcessingTime();
 		}
-		System.out.println("count?");
+		//System.out.println("count?");
 	}
 
 	/**
@@ -81,7 +77,7 @@ public class PriSim extends Thread {
 	private void countDownCurrentBurstTime() {
 		if (currentProcess == null) {
 			currentProcess = queue.poll();
-			System.out.println( "Added new process");
+			//System.out.println( "Added new process");
 		}
 		if (currentProcess != null && currentProcess.countDownBurstTime() && !currentProcess.isCompleted()) {
 			System.out.println("Finished task: " + currentProcess.getProcessId());
@@ -112,13 +108,22 @@ public class PriSim extends Thread {
 		while (tasksCompleted < tasksToComplete) {
 			tick();
 			ticks++;
-			System.out.println(ticks + " Ticks completed");
+			//System.out.println(ticks + " Ticks completed");
 		}
 
+		int avgWait = 0;
+		int avgTurnaround = 0;
 		for (ScheduledProcess scheduledProcess : finishedTasks) {
+			avgWait += scheduledProcess.getWaitingTime();
+			avgTurnaround += scheduledProcess.getTurnaroundTime();
 			System.out.println(
 				scheduledProcess.getProcessId() + " : Wait: " + scheduledProcess.getWaitingTime() + " : Turnaround:" + scheduledProcess.getTurnaroundTime()
 			);
 		}
+		avgTurnaround = avgTurnaround / finishedTasks.size();
+		avgWait = avgWait / finishedTasks.size();
+
+		System.out.println("Avrage turnaround time: " + avgTurnaround);
+		System.out.println("Avrage waiting time: " + avgWait);
 	}
 }
