@@ -228,7 +228,7 @@ public class ScheduledProcess implements Comparable<ScheduledProcess> {
 		if (priority < process.getPriority()) {
 			return -1;
 		} else if (priority > process.getPriority()) {
-			return -1;
+			return 1;
 		}
 		return 0;
 	}

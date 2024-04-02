@@ -1,9 +1,12 @@
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.PriorityQueue;
 
 public class PriSim extends Thread {
+	private ArrayList<ScheduledProcess> finishedTasks;
 	private ScheduledProcess[] processes;
 	private PriorityQueue<ScheduledProcess> queue;
 	private ScheduledProcess currentProcess;
@@ -14,6 +17,7 @@ public class PriSim extends Thread {
 		this.processes = processes;
 		tasksToComplete = processes.length;
 		tasksCompleted = 0;
+		finishedTasks = new ArrayList<>();
 		initQueue();
 	}
 
@@ -28,11 +32,12 @@ public class PriSim extends Thread {
 	}
 
 	private void addToQueue(ScheduledProcess process) {
+		process.startWaiting();;
 		queue.add(process);
 	}
 
 	private void sleepOrThrow(int ms) {
-		System.out.println("Slept");
+		//System.out.println("Slept");
 		try {
 			sleep(ms);
 		} catch (InterruptedException e) {
@@ -40,12 +45,27 @@ public class PriSim extends Thread {
 		}
 	}
 
+	private void countUpProcessing() {
+		for (ScheduledProcess scheduledProcess : processes) {
+			if (scheduledProcess != null) {
+				scheduledProcess.countUpProcessingTime();
+			}
+		}
+		for (ScheduledProcess scheduledProcess : queue) {
+			scheduledProcess.countUpProcessingTime();
+		}
+		if (currentProcess != null) {
+			currentProcess.countUpProcessingTime();
+		}
+		System.out.println("count?");
+	}
+
 	/**
 	 * Counts down the arrival time of all waiting processes by one.
 	 * Adds them to the queue if they arrive.
 	 */
 	private void countDownArrivalTime () {
-		System.out.println("Decreased arrival time");
+		//System.out.println("Decreased arrival time");
 		for (int index = tasksToComplete - 1; index >= 0; index--) {
 			ScheduledProcess process = processes[index];
 			if (process != null && process.countDownArrivalTime() && !process.isCompleted()) {
@@ -64,10 +84,14 @@ public class PriSim extends Thread {
 			System.out.println( "Added new process");
 		}
 		if (currentProcess != null && currentProcess.countDownBurstTime() && !currentProcess.isCompleted()) {
+			System.out.println("Finished task: " + currentProcess.getProcessId());
 			currentProcess.complete();
+			finishedTasks.add(currentProcess);
 			currentProcess = queue.poll();
+			if (currentProcess!= null) {
+				currentProcess.startProcessing();
+			}
 			tasksCompleted++;
-			System.out.println("Decreased current burst time time");
 		}
 	}
 
@@ -78,6 +102,7 @@ public class PriSim extends Thread {
 		sleepOrThrow(1);
 		countDownArrivalTime();
 		countDownCurrentBurstTime();
+		countUpProcessing();
 	}
 
 
@@ -88,6 +113,12 @@ public class PriSim extends Thread {
 			tick();
 			ticks++;
 			System.out.println(ticks + " Ticks completed");
+		}
+
+		for (ScheduledProcess scheduledProcess : finishedTasks) {
+			System.out.println(
+				scheduledProcess.getProcessId() + " : Wait: " + scheduledProcess.getWaitingTime() + " : Turnaround:" + scheduledProcess.getTurnaroundTime()
+			);
 		}
 	}
 }
