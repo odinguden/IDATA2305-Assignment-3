@@ -10,18 +10,18 @@ public class Proccess {
 	private int priority;
 
 	
-	public Proccess(int id, double burstTime, int priotity) {
+	public Proccess(int id, double burstTime, int priority) {
 		this.id = id;
 		this.arrivalTime = 0;
 		this.burstTime = burstTime;
-		this.priotity = priotity;
+		this.priotity = priority;
 	}
 
 	public Proccess(int id, double burstTime) {
 		this.id = id;
 		this.arrivalTime = 0;
 		this.burstTime = burstTime;
-		this.priotity = 0;
+		this.priority = 0;
 	}
 
 
@@ -49,12 +49,12 @@ public class Proccess {
 		this.burstTime = burstTime;
 	}
 
-	public int getPriotity() {
-		return priotity;
+	public int getPriority() {
+		return priority;
 	}
 
-	public void setPriotity(int priotity) {
-		this.priotity = priotity;
+	public void setPriority(int priority) {
+		this.priotity = priority;
 	}
 
 
