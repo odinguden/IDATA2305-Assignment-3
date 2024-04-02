@@ -14,7 +14,7 @@ public class Proccess {
 		this.id = id;
 		this.arrivalTime = 0;
 		this.burstTime = burstTime;
-		this.priotity = priority;
+		this.priority = priority;
 	}
 
 	public Proccess(int id, double burstTime) {
