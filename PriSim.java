@@ -111,8 +111,8 @@ public class PriSim extends Thread {
 			//System.out.println(ticks + " Ticks completed");
 		}
 
-		int avgWait = 0;
-		int avgTurnaround = 0;
+		double avgWait = 0;
+		double avgTurnaround = 0;
 		for (ScheduledProcess scheduledProcess : finishedTasks) {
 			avgWait += scheduledProcess.getWaitingTime();
 			avgTurnaround += scheduledProcess.getTurnaroundTime();
@@ -123,7 +123,6 @@ public class PriSim extends Thread {
 		avgTurnaround = avgTurnaround / finishedTasks.size();
 		avgWait = avgWait / finishedTasks.size();
 
-		System.out.println("Avrage turnaround time: " + avgTurnaround);
-		System.out.println("Avrage waiting time: " + avgWait);
+		System.out.printf("%nPreemptive Priority scheduling Results:%n\tAverage waiting time: %.2f%n\tAverage turnaround time: %.2f%n", avgWait, avgTurnaround);
 	}
 }
