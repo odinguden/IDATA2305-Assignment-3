@@ -10,7 +10,8 @@ public class Main {
 			//processes[i] = new ScheduledProcess(i, 1, 1);
 			int arrivalTime = random.nextInt(1, 100);
 			int burstTime = random.nextInt(1, 100);
-			processes[i] = new ScheduledProcess(i, arrivalTime, burstTime);
+			int pri = random.nextInt(0,9);
+			processes[i] = new ScheduledProcess(i, arrivalTime, burstTime, pri);
 			System.out.printf("PID: %d%n\tArrival: %d%n\tBurst: %d%n", i, arrivalTime, burstTime);
 		}
 

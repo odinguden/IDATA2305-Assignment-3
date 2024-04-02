@@ -14,10 +14,11 @@ public class PriSim extends Thread {
 		this.processes = processes;
 		tasksToComplete = processes.length;
 		tasksCompleted = 0;
-		queue = new PriorityQueue<>();
+		initQueue();
 	}
 
 	private void initQueue() {
+		queue = new PriorityQueue<>();
 		for (ScheduledProcess scheduledProcess : processes) {
 			if (scheduledProcess.countDownArrivalTime()) {
 				queue.add(scheduledProcess);
@@ -31,6 +32,7 @@ public class PriSim extends Thread {
 	}
 
 	private void sleepOrThrow(int ms) {
+		System.out.println("Slept");
 		try {
 			sleep(ms);
 		} catch (InterruptedException e) {
@@ -43,6 +45,7 @@ public class PriSim extends Thread {
 	 * Adds them to the queue if they arrive.
 	 */
 	private void countDownArrivalTime () {
+		System.out.println("Decreased arrival time");
 		for (int index = tasksToComplete - 1; index >= 0; index--) {
 			ScheduledProcess process = processes[index];
 			if (process != null && process.countDownArrivalTime() && !process.isCompleted()) {
@@ -56,10 +59,15 @@ public class PriSim extends Thread {
 	 * Counts down the burst time of the current process by 1
 	 */
 	private void countDownCurrentBurstTime() {
+		if (currentProcess == null) {
+			currentProcess = queue.poll();
+			System.out.println( "Added new process");
+		}
 		if (currentProcess != null && currentProcess.countDownBurstTime() && !currentProcess.isCompleted()) {
 			currentProcess.complete();
 			currentProcess = queue.poll();
 			tasksCompleted++;
+			System.out.println("Decreased current burst time time");
 		}
 	}
 
@@ -76,10 +84,10 @@ public class PriSim extends Thread {
 	@Override
 	public void run() {
 		int ticks = 0;
-		while (tasksCompleted > tasksToComplete) {
+		while (tasksCompleted < tasksToComplete) {
 			tick();
-			}
 			ticks++;
 			System.out.println(ticks + " Ticks completed");
 		}
+	}
 }
