@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.PriorityQueue;
 
 public class PriSim extends Thread {
@@ -18,7 +19,9 @@ public class PriSim extends Thread {
 	}
 
 	private void initQueue() {
-		queue = new PriorityQueue<>();
+		// Initialize the PriorityQueue with a lambda expression as the comparator
+		queue = new PriorityQueue<>((p1, p2) -> Integer.compare(p1.getPriority(), p2.getPriority()));
+	
 		for (ScheduledProcess scheduledProcess : processes) {
 			if (scheduledProcess.countDownArrivalTime()) {
 				queue.add(scheduledProcess);
