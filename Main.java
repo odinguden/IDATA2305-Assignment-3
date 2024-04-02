@@ -9,12 +9,12 @@ public class Main {
 
 
 
-	public Process[] createProccesses(int numberOfPrcesseses, boolean pri) {
+	public Process[] createProccesses(int numberOfProcesseses, boolean pri) {
 		Random random = new Random();
-		Process[] proccesses = new Process[numberOfPrcesseses];
+		Process[] proccesses = new Process[numberOfProcesseses];
 
 		if (pri) {
-			for (int i = 0; i < numberOfPrcesseses; i++){
+			for (int i = 0; i < numberOfProcesseses; i++){
 				proccesses[i] = new Process(
 					i,
 					random.nextDouble(),
@@ -22,7 +22,7 @@ public class Main {
 					);
 			}
 		} else {
-			for (int i = 0; i < numberOfPrcesseses; i++){
+			for (int i = 0; i < numberOfProcesseses; i++){
 				proccesses[i] = new Process(
 					i,
 					random.nextDouble(10)
@@ -32,5 +32,6 @@ public class Main {
 
 		return proccesses;
 	}
+
 
 }
