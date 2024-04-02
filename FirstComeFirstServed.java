@@ -1,8 +1,8 @@
 public class FirstComeFirstServed extends Thread {
-	private Proccess[] processes;
+	private Process[] processes;
 	private int currentProcess = -1;
 
-	public FirstComeFirstServed(Proccess[] processes) {
+	public FirstComeFirstServed(Process[] processes) {
 		this.processes = processes;
 	}
 
@@ -18,7 +18,7 @@ public class FirstComeFirstServed extends Thread {
 				e.printStackTrace();
 			}
 			for (int index = 0; index < tasksToComplete; index++) {
-				Proccess process = processes[index];
+				Process process = processes[index];
 				if (process.getArrivalTime() > 0) {
 					process.setArrivalTime(process.getArrivalTime() - 1);
 				} else if (currentProcess > -1) {

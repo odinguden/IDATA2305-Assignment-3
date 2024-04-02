@@ -73,4 +73,13 @@ public class ScheduledProcess {
 	public int getTurnaroundTime() {
 		return turnaroundTime;
 	}
+
+	public void setWaitingTime(int waitingTime) {
+		this.waitingTime = waitingTime;
+	}
+
+	public void setTurnaroundTime(int turnaroundTime) {
+		this.turnaroundTime = turnaroundTime;
+	}
+
 }

@@ -4,18 +4,18 @@ import java.util.Random;
 public class Main {
 
 	public static void main(String[] args) {
-		new Proccess(0, 0, 0);
+		new Process(0, 0, 0);
 	}
 
 
 
-	public Proccess[] createProccesses(int numberOfPrcesseses, boolean pri) {
+	public Process[] createProccesses(int numberOfPrcesseses, boolean pri) {
 		Random random = new Random();
-		Proccess[] proccesses = new Proccess[numberOfPrcesseses];
+		Process[] proccesses = new Process[numberOfPrcesseses];
 
 		if (pri) {
 			for (int i = 0; i < numberOfPrcesseses; i++){
-				proccesses[i] = new Proccess(
+				proccesses[i] = new Process(
 					i,
 					random.nextDouble(),
 					random.nextInt(9)
@@ -23,7 +23,7 @@ public class Main {
 			}
 		} else {
 			for (int i = 0; i < numberOfPrcesseses; i++){
-				proccesses[i] = new Proccess(
+				proccesses[i] = new Process(
 					i,
 					random.nextDouble(10)
 					);

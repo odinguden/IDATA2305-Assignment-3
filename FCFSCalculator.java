@@ -4,68 +4,64 @@
 public class FCFSCalculator {
 
     /**
-     * Finds the waiting time for a process.
-     * @param processes     the processes in an array to calculate.
-     * @param number        the number of processes in the process array.
-     * @param burstTime     the burst time of the corresponding process.
-     * @param waitingTime   the waiting time for a process.
+     * Calculates the waiting time for a process.
+     *
+     * @param processes the process to calculate the waiting time for.
      */
-    static void findWaitingTime(int processes[], int number, 
-    int burstTime[], int waitingTime[]) {
-        //Start waiting time for the first process.
-        waitingTime[0] = 0;
+    static void calculateWaitingTime(ScheduledProcess[] processes) {
+        //Start waiting time count at 0.
+        processes[0].setWaitingTime(0);
 
-        for (int index = 1; index < number; index++) {
-            waitingTime[index] = burstTime[index - 1] + waitingTime[index - 1];
+        for (int index = 1; index < processes.length; index++) {
+            int waitingTime = processes[index-1].getInitialBurstTime() + processes[index-1].getWaitingTime();
+            processes[index].setWaitingTime(waitingTime);
         }
     }
 
     /**
      * Calculates the turnaround time for a process.
      *
-     * @param processes     the processes in an array to calculate.
-     * @param number        the number of processes in the process array.
-     * @param burstTime     the burst time of the corresponding process.
-     * @param waitingTime   the waiting time of the corresponding process.
-     * @param turnaround    the turnaround time for each process.
+     * @param processes the process to calculate the turnaround time for.
      */
-    static void turnAroundTime(int processes[], int number, 
-    int burstTime[], int waitingTime[], int turnaround[]) {
+    static void calculateTurnAroundTime(ScheduledProcess[] processes) {
 
-        //Turnaround = burst time + waiting time.
-        //I.e. time it takes to complete a process.
-        for (int index = 0; index < number; index++) {
-            turnaround[index] = burstTime[index] + waitingTime[index];
+        for (int index = 0; index < processes.length; index++) {
+            int turnaroundTime = processes[index].getInitialBurstTime() + processes[index].getWaitingTime();
+            processes[index].setTurnaroundTime(turnaroundTime);
         }
     }
 
-    static void averageTime(int process[], int number, int burstTime[]) {
-        int waitingTime[] = new int[number], turnaround[] = new int[number];
-        
-        int totalWaitingTime = 0, totalTurnaround = 0; 
+    /**
+     * Calculates the average time for a process.
+     *
+     * @param processes the process to calculate the average time for.
+     */
+    static void calculateAverageTime(ScheduledProcess[] processes) {
+        int totalWaitingTime = 0;
+        int totalTurnaroundTime = 0;
 
-        findWaitingTime(process, number, burstTime, waitingTime);
-        turnAroundTime(process, number, burstTime, waitingTime, turnaround);
+        calculateWaitingTime(processes);
+        calculateTurnAroundTime(processes);
 
-        for (int index = 0; index < number; index++) {
-            totalWaitingTime = totalWaitingTime + waitingTime[index];
-            totalTurnaround = totalTurnaround + turnaround[index];
+        for (ScheduledProcess process : processes) {
+            totalWaitingTime += process.getWaitingTime();
+            totalTurnaroundTime += process.getTurnaroundTime();
         }
 
-        //Average waiting time
-        int averageWaiting = totalWaitingTime / number;
-        int averageTurnaround = totalTurnaround / number;
-
-        System.out.println("Average waiting time: " + averageWaiting);
-        System.out.println("Average turn around time: " + averageTurnaround);
+        System.out.println("Average waiting time = " +
+            totalWaitingTime / processes.length);
+        System.out.println("Average turnaround time = " +
+            totalTurnaroundTime / processes.length);
     }
 
     public static void main(String[] args) {
-        int processes[] = {1, 2, 3};
-        int number = processes.length;
+        ScheduledProcess[] processes = {
+            new ScheduledProcess(1, 0, 10),
+            new ScheduledProcess(2, 0, 5),
+            new ScheduledProcess(3, 0, 8)
+        };
 
-        int burstTime[] = {10, 5, 8};
-
-        averageTime(processes, number, burstTime);
+        calculateAverageTime(processes);
     }
 }
+
