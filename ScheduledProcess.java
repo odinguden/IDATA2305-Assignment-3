@@ -12,6 +12,8 @@ public class ScheduledProcess {
 	private int waitingTime; // Turnaround time - burst time (Time spent not processing)
 	private int turnaroundTime; // Completion time - arrival time (Time spent total)
 
+	private boolean isCompleted = false;
+
 	public ScheduledProcess(int processId, int arrivalTime, int burstTime) {
 		this.processId = processId;
 
@@ -20,6 +22,8 @@ public class ScheduledProcess {
 
 		this.arrivalTime = arrivalTime;
 		this.burstTime = burstTime;
+
+		this.isCompleted = false;
 	}
 
 	public ScheduledProcess(int processId, int arrivalTime, int burstTime, int priority) {
@@ -32,11 +36,16 @@ public class ScheduledProcess {
 		this.burstTime = burstTime;
 
 		this.priority = priority;
+
+		this.isCompleted = false;
 	}
 
 	public boolean countDownArrivalTime() {
 		if (this.arrivalTime > 0) {
 			this.arrivalTime--;
+			if (this.arrivalTime == 0) {
+				System.out.printf("Process PID %d arrived%n", this.processId);
+			}
 		}
 
 		return this.arrivalTime <= 0;
@@ -45,6 +54,9 @@ public class ScheduledProcess {
 	public boolean countDownBurstTime() {
 		if (this.burstTime > 0) {
 			this.burstTime--;
+			if (this.burstTime == 0) {
+				System.out.printf("Process PID %d completed%n", this.processId);
+			}
 		}
 
 		return this.burstTime <= 0;
@@ -82,4 +94,11 @@ public class ScheduledProcess {
 		this.turnaroundTime = turnaroundTime;
 	}
 
+	public boolean isCompleted() {
+		return this.isCompleted;
+	}
+
+	public void complete() {
+		this.isCompleted = true;
+	}
 }
