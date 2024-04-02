@@ -14,9 +14,6 @@ public class Main {
 			System.out.printf("PID: %d%n\tArrival: %d%n\tBurst: %d%n", i, arrivalTime, burstTime);
 		}
 
-		new FirstComeFirstServed(processes).start();
+		new PriSim(processes).start();
 	}
-
-
-	
 }

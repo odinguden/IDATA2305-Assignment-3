@@ -1,4 +1,4 @@
-public class ScheduledProcess {
+public class ScheduledProcess implements Comparable<ScheduledProcess> {
 	private int initialArrivalTime;
 	private int initialBurstTime;
 
@@ -129,5 +129,15 @@ public class ScheduledProcess {
 
 	public void startWaiting() {
 		this.isWaiting = true;
+	}
+
+	@Override
+	public int compareTo(ScheduledProcess process) {
+		if (priority < process.getPriority()) {
+			return -1;
+		} else if (priority > process.getPriority()) {
+			return -1;
+		}
+		return 0;
 	}
 }
