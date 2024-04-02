@@ -1,31 +1,52 @@
-public class FirstComeFirstServed extends Thread {
-	private Process[] processes;
-	private int currentProcess = -1;
+import java.util.LinkedList;
+import java.util.Queue;
 
-	public FirstComeFirstServed(Process[] processes) {
+public class FirstComeFirstServed extends Thread {
+	private ScheduledProcess[] processes;
+
+	public FirstComeFirstServed(ScheduledProcess[] processes) {
 		this.processes = processes;
+	}
+
+	private void sleepOrThrow(int ms) {
+		try {
+			sleep(ms);
+		} catch (InterruptedException e) {
+			throw new RuntimeException("What am I supposed to do to handle this shit");
+		}
 	}
 
 	@Override
 	public void run() {
 		int tasksCompleted = 0;
 		int tasksToComplete = processes.length;
+		Queue<ScheduledProcess> arrivedProcesses = new LinkedList<>();
+		ScheduledProcess currentProcess = null;
+
 		while (tasksCompleted < tasksToComplete) {
-			try {
-				sleep(1);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			for (int index = 0; index < tasksToComplete; index++) {
-				Process process = processes[index];
-				if (process.getArrivalTime() > 0) {
-					process.setArrivalTime(process.getArrivalTime() - 1);
-				} else if (currentProcess > -1) {
-					
-				} else {
-					this.currentProcess = index;
+			sleepOrThrow(1);
+
+			//System.out.println("---");
+
+			for (int index = tasksToComplete - 1; index >= 0; index--) {
+				ScheduledProcess process = processes[index];
+				if (process != null && process.countDownArrivalTime() && !process.isCompleted()) {
+					processes[index] = null;
+					arrivedProcesses.add(process);
 				}
+			}
+
+			if (currentProcess == null) {
+				currentProcess = arrivedProcesses.poll();
+				if (currentProcess != null) {
+					System.out.printf("Started work on PID %d%n", currentProcess.getProcessId());
+				}
+			}
+
+			if (currentProcess != null && currentProcess.countDownBurstTime()) {
+				currentProcess.complete();
+				tasksCompleted++;
+				currentProcess = null;
 			}
 		}
 	}
