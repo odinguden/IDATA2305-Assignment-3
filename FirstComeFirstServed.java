@@ -26,6 +26,9 @@ public class FirstComeFirstServed extends Thread {
 		while (tasksCompleted < tasksToComplete) {
 			sleepOrThrow(1);
 
+			/**
+			 * Iterates over all the processes and checks if they have arrived.
+			 */
 			for (int index = 0; index < tasksToComplete; index++) {
 				ScheduledProcess process = processes[index];
 				if (process.countDownArrivalTime() && !process.isWaiting()) {
@@ -34,6 +37,9 @@ public class FirstComeFirstServed extends Thread {
 				}
 			}
 
+			/**
+			 * Checks the arrived processes and checks if they can be processed.
+			 */
 			if (currentProcess == null) {
 				currentProcess = arrivedProcesses.poll();
 				if (currentProcess != null) {
@@ -42,10 +48,16 @@ public class FirstComeFirstServed extends Thread {
 				}
 			}
 
+			/**
+			 * Increments the processing time counter for all processes
+			 */
 			for (ScheduledProcess process : processes) {
 				process.countUpProcessingTime();
 			}
 
+			/**
+			 * Checks if the process being processed is done, and marks it as complete.
+			 */
 			if (currentProcess != null && currentProcess.countDownBurstTime()) {
 				currentProcess.complete();
 				tasksCompleted++;
@@ -54,6 +66,10 @@ public class FirstComeFirstServed extends Thread {
 				currentProcess = null;
 			}
 		}
+
+		/**
+		 * Calculate average waiting and turnaround time.
+		 */
 
 		int sumWaitingTime = 0;
 		int sumTurnaroundTime = 0;
