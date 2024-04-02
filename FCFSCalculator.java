@@ -1,5 +1,6 @@
 /**
- * A class that calculates the FCFS (First Come, First Served) scheduling algorithm.
+ * A class that calculates the FCFS (First Come, First Served) scheduling algorithm. 
+ * Purely based on maths side, without implementing threads.
  */
 public class FCFSCalculator {
 
@@ -37,15 +38,17 @@ public class FCFSCalculator {
      * @param processes the process to calculate the average time for.
      */
     static void calculateAverageTime(ScheduledProcess[] processes) {
+        //Start count at 0.
         int totalWaitingTime = 0;
         int totalTurnaroundTime = 0;
 
+        //Calculates both waiting time and turnaround time.
         calculateWaitingTime(processes);
         calculateTurnAroundTime(processes);
 
         for (ScheduledProcess process : processes) {
-            totalWaitingTime += process.getWaitingTime();
-            totalTurnaroundTime += process.getTurnaroundTime();
+            totalWaitingTime =  totalWaitingTime + process.getWaitingTime();
+            totalTurnaroundTime = totalTurnaroundTime + process.getTurnaroundTime();
         }
 
         System.out.println("Average waiting time = " +
@@ -54,6 +57,10 @@ public class FCFSCalculator {
             totalTurnaroundTime / processes.length);
     }
 
+    /**
+     * A test to check that the 
+     * @param args
+     */
     public static void main(String[] args) {
         ScheduledProcess[] processes = {
             new ScheduledProcess(1, 0, 10),
