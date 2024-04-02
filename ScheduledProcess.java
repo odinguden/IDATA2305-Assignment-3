@@ -12,6 +12,8 @@ public class ScheduledProcess {
 	private int waitingTime; // Turnaround time - burst time (Time spent not processing)
 	private int turnaroundTime; // Completion time - arrival time (Time spent total)
 
+	private boolean isWaiting = false;
+	private boolean isProcessing = false;
 	private boolean isCompleted = false;
 
 	public ScheduledProcess(int processId, int arrivalTime, int burstTime) {
@@ -23,6 +25,7 @@ public class ScheduledProcess {
 		this.arrivalTime = arrivalTime;
 		this.burstTime = burstTime;
 
+		this.isProcessing = false;
 		this.isCompleted = false;
 	}
 
@@ -37,6 +40,7 @@ public class ScheduledProcess {
 
 		this.priority = priority;
 
+		this.isProcessing = false;
 		this.isCompleted = false;
 	}
 
@@ -60,6 +64,15 @@ public class ScheduledProcess {
 		}
 
 		return this.burstTime <= 0;
+	}
+
+	public void countUpProcessingTime() {
+		if (this.isCompleted) return;
+
+		this.turnaroundTime++;
+		if (this.isProcessing) {
+			this.waitingTime++;
+		}
 	}
 
 	public int getInitialArrivalTime() {
@@ -100,5 +113,21 @@ public class ScheduledProcess {
 
 	public void complete() {
 		this.isCompleted = true;
+	}
+
+	public boolean isProccessing() {
+		return this.isProcessing;
+	}
+
+	public void startProcessing() {
+		this.isProcessing = true;
+	}
+
+	public boolean isWaiting() {
+		return this.isWaiting;
+	}
+
+	public void startWaiting() {
+		this.isWaiting = true;
 	}
 }

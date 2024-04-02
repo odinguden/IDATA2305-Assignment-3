@@ -26,19 +26,19 @@ public class FirstComeFirstServed extends Thread {
 		while (tasksCompleted < tasksToComplete) {
 			sleepOrThrow(1);
 
-			//System.out.println("---");
-
-			for (int index = tasksToComplete - 1; index >= 0; index--) {
+			for (int index = 0; index < tasksToComplete; index++) {
 				ScheduledProcess process = processes[index];
-				if (process != null && process.countDownArrivalTime() && !process.isCompleted()) {
-					processes[index] = null;
+				process.countUpProcessingTime();
+				if (process.countDownArrivalTime() && !process.isWaiting()) {
 					arrivedProcesses.add(process);
+					process.startWaiting();
 				}
 			}
 
 			if (currentProcess == null) {
 				currentProcess = arrivedProcesses.poll();
 				if (currentProcess != null) {
+					currentProcess.startProcessing();
 					System.out.printf("Started work on PID %d%n", currentProcess.getProcessId());
 				}
 			}
@@ -46,6 +46,8 @@ public class FirstComeFirstServed extends Thread {
 			if (currentProcess != null && currentProcess.countDownBurstTime()) {
 				currentProcess.complete();
 				tasksCompleted++;
+				System.out.printf("\tWaiting time: %d%n\tTurnaround time: %d%n",
+					currentProcess.getWaitingTime(), currentProcess.getTurnaroundTime());
 				currentProcess = null;
 			}
 		}
