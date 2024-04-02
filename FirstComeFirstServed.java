@@ -82,6 +82,6 @@ public class FirstComeFirstServed extends Thread {
 		double averageWaitingTime = (double) sumWaitingTime / this.processes.length;
 		double averageTurnaroundTime = (double) sumTurnaroundTime / this.processes.length;
 
-		System.out.printf("%nAverage waiting time: %.2f%nAverage turnaround time: %.2f%n", averageWaitingTime, averageTurnaroundTime);
+		System.out.printf("%nFirst Come First Served Results:%n\tAverage waiting time: %.2f%n\tAverage turnaround time: %.2f%n", averageWaitingTime, averageTurnaroundTime);
 	}
 }
