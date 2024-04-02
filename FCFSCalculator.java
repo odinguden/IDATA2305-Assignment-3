@@ -27,6 +27,7 @@ public class FCFSCalculator {
     static void calculateTurnAroundTime(ScheduledProcess[] processes) {
 
         for (int index = 0; index < processes.length; index++) {
+            //Turnaround is burst time + waiting time.
             int turnaroundTime = processes[index].getInitialBurstTime() + processes[index].getWaitingTime();
             processes[index].setTurnaroundTime(turnaroundTime);
         }
@@ -58,7 +59,7 @@ public class FCFSCalculator {
     }
 
     /**
-     * A test to check that the 
+     * A test to check that the average waiting- and turnaround times are correct.
      * @param args
      */
     public static void main(String[] args) {
