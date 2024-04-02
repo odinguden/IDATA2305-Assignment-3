@@ -67,10 +67,10 @@ public class ScheduledProcess {
 	}
 
 	public void countUpProcessingTime() {
-		if (this.isCompleted) return;
+		if (this.isCompleted || !this.isWaiting) return;
 
 		this.turnaroundTime++;
-		if (this.isProcessing) {
+		if (!this.isProcessing) {
 			this.waitingTime++;
 		}
 	}

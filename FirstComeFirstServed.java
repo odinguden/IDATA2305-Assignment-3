@@ -28,7 +28,6 @@ public class FirstComeFirstServed extends Thread {
 
 			for (int index = 0; index < tasksToComplete; index++) {
 				ScheduledProcess process = processes[index];
-				process.countUpProcessingTime();
 				if (process.countDownArrivalTime() && !process.isWaiting()) {
 					arrivedProcesses.add(process);
 					process.startWaiting();
@@ -41,6 +40,10 @@ public class FirstComeFirstServed extends Thread {
 					currentProcess.startProcessing();
 					System.out.printf("Started work on PID %d%n", currentProcess.getProcessId());
 				}
+			}
+
+			for (ScheduledProcess process : processes) {
+				process.countUpProcessingTime();
 			}
 
 			if (currentProcess != null && currentProcess.countDownBurstTime()) {
